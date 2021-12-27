@@ -1,0 +1,324 @@
+SQL> REMARK 1
+SQL> SELECT CURRENT_DATE
+  2  FROM DUAL;
+
+CURRENT_D                                                                                                                         
+---------                                                                                                                         
+06-DEC-21                                                                                                                         
+
+SQL> REMARK 2
+SQL> SELECT CURRENT_TIMESTAMP
+  2  FROM DUAL;
+
+CURRENT_TIMESTAMP                                                                                                                 
+---------------------------------------------------------------------------                                                       
+06-DEC-21 03.42.38.956610 PM +00:00                                                                                               
+
+SQL> REMARK 3
+SQL> SELECT TO_CHAR(SYSDATE, 'DAY:DD:MM:YY')
+  2  FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAY:DD:MM:YY')                                                                                                   
+---------------------------------------------                                                                                     
+MONDAY   :06:12:21                                                                                                                
+
+SQL> REMARK 4
+SQL> SELECT TO_CHAR(SYSDATE, 'HH24')
+  2  FROM DUAL;
+
+TO                                                                                                                                
+--                                                                                                                                
+15                                                                                                                                
+
+SQL> REMARK 5
+SQL> SELECT SYSDATE - FI
+  2  FROM PLAN_DOCENTE
+  3  WHERE (CAS = 11) AND (DNI = 8888);
+
+SYSDATE-FI                                                                                                                        
+----------                                                                                                                        
+4479.65583                                                                                                                        
+
+SQL> REMARK 6
+SQL> SELECT P
+  2  FROM PROFESOR NATURAL JOIN PLAN_DOCENTE
+  3  WHERE (SYSDATE - FI) > 365;
+
+P                                                                                                                                 
+------------------------------------------------------------                                                                      
+JUAN                                                                                                                              
+JUAN                                                                                                                              
+CARLOS                                                                                                                            
+CARLOS                                                                                                                            
+PEDRO                                                                                                                             
+PEDRO                                                                                                                             
+MARIA                                                                                                                             
+MARIA                                                                                                                             
+MARIA                                                                                                                             
+IVAN                                                                                                                              
+CARMEN                                                                                                                            
+MARIO                                                                                                                             
+FRANCISCO                                                                                                                         
+ANGELA                                                                                                                            
+DAVID                                                                                                                             
+DAVID                                                                                                                             
+DAVID                                                                                                                             
+SOLEDAD                                                                                                                           
+JOSE MANUEL                                                                                                                       
+
+19 rows selected.
+
+SQL> REMARK 7
+SQL> SELECT COUNT(DISTINCT P)
+  2  FROM DEPARTAMENTO NATURAL JOIN PROFESOR NATURAL JOIN AREA
+  3  WHERE D = 'ASTROFISICA';
+
+COUNT(DISTINCTP)                                                                                                                  
+----------------                                                                                                                  
+               1                                                                                                                  
+
+SQL> REMARK 8
+SQL> SELECT D, COUNT(DISTINCT P)
+  2  FROM DEPARTAMENTO NATURAL JOIN PROFESOR NATURAL JOIN AREA
+  3  GROUP BY D;
+
+D                                                            COUNT(DISTINCTP)                                                     
+------------------------------------------------------------ ----------------                                                     
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                          7                                                     
+ANALISIS MATEMATATICO                                                       3                                                     
+ASTROFISICA                                                                 1                                                     
+MATEMATICA FUNDAMENTAL                                                      1                                                     
+
+SQL> REMARK 9
+SQL> SELECT COUNT(CAS)
+  2  FROM DEPARTAMENTO NATURAL JOIN AREA NATURAL JOIN ASIGNATURA NATURAL JOIN PLAN_DOCENTE
+  3  WHERE D = 'ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION' AND FF IS NOT NULL;
+
+COUNT(CAS)                                                                                                                        
+----------                                                                                                                        
+         5                                                                                                                        
+
+SQL> REMARK 10
+SQL> SELECT COUNT(*)
+  2  FROM PROFESOR NATURAL JOIN AREA
+  3  WHERE AR LIKE 'A%';
+
+  COUNT(*)                                                                                                                        
+----------                                                                                                                        
+         3                                                                                                                        
+
+SQL> REMARK 11
+SQL> SELECT T, COUNT(DISTINCT A)
+  2  FROM ASIGNATURA
+  3  GROUP BY T
+  4  ORDER BY T;
+
+T    COUNT(DISTINCTA)                                                                                                             
+---- ----------------                                                                                                             
+GF                  1                                                                                                             
+GII                 7                                                                                                             
+GM                  2                                                                                                             
+MII                 2                                                                                                             
+
+SQL> REMARK 12
+SQL> SELECT DNI
+  2  FROM PROP;
+FROM PROP
+     *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> REMARK 12
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CT = (SELECT MAX(CT)
+  4              FROM ASIGNATURA);
+
+A                                                                                                                                 
+--------------------------------------------------                                                                                
+DIDACTICA DE LA MATEMATICA                                                                                                        
+
+SQL> REMARK 13
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  GROUP BY A
+  4  HAVING SUM(CT) = (SELECT MIN(SUM(CT))
+  5                    FROM ASIGNATURA
+  6                    GROUP BY A);
+
+A                                                                                                                                 
+--------------------------------------------------                                                                                
+INTELIGENCIA ARTIFICIAL                                                                                                           
+MINERIA DE DATOS                                                                                                                  
+ALMACENES DE DATOS                                                                                                                
+
+SQL> REMARK 14
+SQL> SELECT A, CT + CP + CL
+  2  FROM ASIGNATURA;
+
+A                                                    CT+CP+CL                                                                     
+-------------------------------------------------- ----------                                                                     
+CALCULO                                                     6                                                                     
+BASES DE DATOS                                              6                                                                     
+INTELIGENCIA ARTIFICIAL                                     6                                                                     
+ALMACENES DE DATOS                                          3                                                                     
+MINERIA DE DATOS                                            3                                                                     
+INFORMATICA BASICA                                          6                                                                     
+ALGEBRA                                                     6                                                                     
+OPTIMIZACION                                                6                                                                     
+GESTION DE RIESGOS                                          6                                                                     
+ASTRONOMIA                                                  6                                                                     
+DIDACTICA DE LA MATEMATICA                                  6                                                                     
+ANALISIS COMPLEJO                                         7.5                                                                     
+
+12 rows selected.
+
+SQL> REMARK 15
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  GROUP BY A
+  4  HAVING SUM(CT + CP + CL) = (SELECT MAX(SUM(CT + CP + CL))
+  5                              FROM ASIGNATURA
+  6                              GROUP BY A);
+
+A                                                                                                                                 
+--------------------------------------------------                                                                                
+ANALISIS COMPLEJO                                                                                                                 
+
+SQL> REMARK 16
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  GROUP BY A
+  4  HAVING SUM(CT + CP + CL) = (SELECT MIN(SUM(CT + CP + CL))
+  5                              FROM ASIGNATURA
+  6                              GROUP BY A);
+
+A                                                                                                                                 
+--------------------------------------------------                                                                                
+MINERIA DE DATOS                                                                                                                  
+ALMACENES DE DATOS                                                                                                                
+
+SQL> REMARK 17
+SQL> SELECT AR
+  2  FROM ASIGNATURA NATURAL JOIN AREA
+  3  GROUP BY A
+  4  HAVING SUM(CT + CP + CL) = (SELECT MIN(SUM(CT + CP + CL))
+  5                              FROM ASIGNATURA
+  6                              GROUP BY A);
+SELECT AR
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> REMARK 17
+SQL> SELECT AR
+  2  FROM ASIGNATURA NATURAL JOIN AREA
+  3  GROUP BY A
+  4  HAVING SUM(CT + CP + CL) = (SELECT MIN(SUM(CT + CP + CL))
+  5                              FROM ASIGNATURA NATURAL JOIN AREA
+  6                              GROUP BY A);
+SELECT AR
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> REMARK 17
+SQL> SELECT AR
+  2  FROM ASIGNATURA NATURAL JOIN AREA
+  3  GROUP BY AR
+  4  HAVING SUM(CT + CP + CL) = (SELECT MIN(SUM(CT + CP + CL))
+  5                              FROM ASIGNATURA NATURAL JOIN AREA
+  6                              GROUP BY A);
+
+no rows selected
+
+SQL> REMARK 18
+SQL> SELECT COUNT(DISTINCT CAS)
+  2  FROM PLAN_DOCENTE
+  3  WHERE (DNI = 1111);
+
+COUNT(DISTINCTCAS)                                                                                                                
+------------------                                                                                                                
+                 1                                                                                                                
+
+SQL> REMARK 19
+SQL> SELECT SUM(CTA + CPA + CLA)
+  2  FROM PLAN_DOCENTE
+  3  GROUP BY DNI
+  4  HAVING DNI = 1111;
+
+SUM(CTA+CPA+CLA)                                                                                                                  
+----------------                                                                                                                  
+               9                                                                                                                  
+
+SQL> REMARK 20
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI
+  4                FROM PLAN_DOCENTE
+  5                GROUP BY DNI, FF
+  6                HAVING FF IS NULL AND SUM(CTA + CPA + CLA) = (SELECT MAX(SUM(CTA + CPA + CLA))
+  7                                                              FROM PLAN_DOCENTE
+  8                                                              GROUP BY DNI, FF
+  9                                                              HAVING FF IS NULL));
+
+P                                                                                                                                 
+------------------------------------------------------------                                                                      
+MARIA                                                                                                                             
+PEDRO                                                                                                                             
+
+SQL> REMARK 21
+SQL> SELECT AVG(COUNT(*))
+  2  FROM ASIGNATURA NATURAL JOIN AREA
+  3  GROUP BY AR;
+
+AVG(COUNT(*))                                                                                                                     
+-------------                                                                                                                     
+          1.5                                                                                                                     
+
+SQL> REMARK 22
+SQL> SELECT AVG(COUNT(*))
+  2  FROM PROFESOR NATURAL JOIN AREA NATURAL JOIN DEPARTAMENTO
+  3  GROUP BY D;
+
+AVG(COUNT(*))                                                                                                                     
+-------------                                                                                                                     
+            3                                                                                                                     
+
+SQL> REMARK 23
+SQL> SELECT AR
+  2  FROM AREA NATURAL JOIN ASIGNATURA
+  3  GROUP BY AR
+  4  HAVING COUNT(*) > 3;
+
+AR                                                                                                                                
+------------------------------------------------------------                                                                      
+LENGUAJES Y SISTEMAS INFORMATICOS                                                                                                 
+
+SQL> REMARK 24
+SQL> SELECT AR
+  2  FROM AREA NATURAL JOIN ASIGNATURA
+  3  GROUP BY AR
+  4  HAVING COUNT(*) > 6;
+
+no rows selected
+
+SQL> SPOOL
+currently spooling to PRACT6.lst
+SQL> REMARK 25
+SQL> SELECT D
+  2  FROM DEPARTAMENTO NATURAL JOIN AREA NATURAL JOIN ASIGNATURA
+  3  GROUP BY D
+  4  HAVING COUNT(*) = (SELECT MIN(COUNT(*))
+  5                     FROM DEPARTAMENTO NATURAL JOIN AREA NATURAL JOIN ASIGNATURA
+  6                     GROUP BY D);
+
+D                                                                                                                                 
+------------------------------------------------------------                                                                      
+ASTROFISICA                                                                                                                       
+MATEMATICA FUNDAMENTAL                                                                                                            
+
+SQL> SPOOL OFF

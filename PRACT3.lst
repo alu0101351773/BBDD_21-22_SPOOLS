@@ -1,0 +1,758 @@
+SQL> CREATE TABLE DEPARTAMENTO
+  2  (CD NUMBER(2) PRIMARY KEY,
+  3  D VARCHAR2(60));
+
+Table created.
+
+SQL> CREATE TABLE AREA
+  2  (CAR NUMBER(3) PRIMARY KEY,
+  3  AR VARCHAR2(60),
+  4  CD NUMBER(2) REFERENCES DEPARTAMENTO ON DELETE CASCADE);
+
+Table created.
+
+SQL> CREATE TABLE PROFESOR
+  2  (DNI NUMBER(8) PRIMARY KEY,
+  3  P VARCHAR2(60),
+  4  CAR NUMBER(3),
+  5  CAT VARCHAR2(5),
+  6  FOREIGN KEY (CAR) REFERENCES AREA ON DELETE SET NULL);
+
+Table created.
+
+SQL> CREATE TABLE ASIGNATURA
+  2  (CAS NUMBER(3) PRIMARY KEY,
+  3  A VARCHAR2(50) NOT NULL,
+  4  T CHAR(4) NOT NULL,
+  5  CUR NUMBER(1) CHECK (CUR BETWEEN 1 AND 5),
+  6  CAR NUMBER(3) REFERENCES AREA ON DELETE SET NULL,
+  7  CT NUMBER(3,1) DEFAULT 0.0,
+  8  CP NUMBER(3,1) DEFAULT 0.0,
+  9  CL NUMBER(3,1) DEFAULT 0.0);
+
+Table created.
+
+SQL> CREATE TABLE PLAN_DOCENTE
+  2  (DNI NUMBER(8),
+  3  CAS NUMBER(3),
+  4  CTA NUMBER(3,1) DEFAULT 0.0,
+  5  CPA NUMBER(3,1) DEFAULT 0.0,
+  6  CLA NUMBER(3,1) DEFAULT 0.0,
+  7  FI DATE DEFAULT SYSDATE,
+  8  FF DATE,
+  9  PRIMARY KEY(DNI, CAS, FI),
+ 10  FOREIGN KEY (CAS) REFERENCES ASIGNATURA ON DELETE CASCADE,
+ 11  FOREIGN KEY (DNI) REFERENCES PROFESOR ON DELETE CASCADE,
+ 12  CHECK (FF >= FI));
+
+Table created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> DESCRIBE DEPARTAMENTO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CD                                        NOT NULL NUMBER(2)
+ D                                                  VARCHAR2(60)
+
+SQL> INSERT INTO DEPARTAMENTO
+  2  VALUES(1, 'ANALISIS MATEMATATICO');
+
+1 row created.
+
+SQL> INSERT INTO DEPARTAMENTO
+  2  VALUES(2, 'ASTROFISICA');
+
+1 row created.
+
+SQL> INSERT INTO DEPARTAMENTO
+  2  VALUES(3, 'ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION');
+
+1 row created.
+
+SQL> INSERT INTO DEPARTAMENTO
+  2  VALUES(4, 'MATEMATICA FUNDAMENTAL');
+
+1 row created.
+
+SQL> COMMIT WORK
+  2  ;
+
+Commit complete.
+
+SQL> INSERT INTO AREA
+  2  VALUES(1, 'ALGEBRA', 4);
+
+1 row created.
+
+SQL> INSERT INTO AREA
+  2  VALUES(2, 'ANALISIS MATEMATICO', 1);
+
+1 row created.
+
+SQL> INSERT INTO AREA
+  2  VALUES(3, 'ASTRONOMIA Y ASTROFISICA', 2);
+
+1 row created.
+
+SQL> INSERT INTO AREA
+  2  VALUES(4, 'CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL', 3);
+
+1 row created.
+
+SQL> COMMIT WORK
+  2  ;
+
+Commit complete.
+
+SQL> INSERT INTO AREA
+  2  VALUE(5, 'DIDACTICA DE LA MATEMATICA', 1);
+VALUE(5, 'DIDACTICA DE LA MATEMATICA', 1)
+      *
+ERROR at line 2:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> INSERT INTO AREA
+  2  VALUES(5, 'DIDACTICA DE LA MATEMATICA', 1);
+
+1 row created.
+
+SQL> INSERT INTO AREA
+  2  VALUES(6, 'ESTADISTICA E INVESTIGACION OPERATIVA', 3);
+
+1 row created.
+
+SQL> INSERT INTO AREA
+  2  VALUES(7, 'LENGUAJES Y SISTEMAS INFORMATICOS', 3);
+
+1 row created.
+
+SQL> INSERT INTO AREA
+  2  VALUES(8, 'MATEMATICA APLICADA', 1);
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> DESCRIBE DEPARTAMENTO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CD                                        NOT NULL NUMBER(2)
+ D                                                  VARCHAR2(60)
+
+SQL> SELECT *
+  2  FROM DEPARTAMENTO;
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         1 ANALISIS MATEMATATICO                                                
+         2 ASTROFISICA                                                          
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+         4 MATEMATICA FUNDAMENTAL                                               
+
+SQL> SELECT *
+  2  FROM AREA;
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         1 ALGEBRA                                                              
+         4                                                                      
+                                                                                
+         2 ANALISIS MATEMATICO                                                  
+         1                                                                      
+                                                                                
+         3 ASTRONOMIA Y ASTROFISICA                                             
+         2                                                                      
+                                                                                
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         4 CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                 
+         3                                                                      
+                                                                                
+         5 DIDACTICA DE LA MATEMATICA                                           
+         1                                                                      
+                                                                                
+         6 ESTADISTICA E INVESTIGACION OPERATIVA                                
+         3                                                                      
+                                                                                
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         7 LENGUAJES Y SISTEMAS INFORMATICOS                                    
+         3                                                                      
+                                                                                
+         8 MATEMATICA APLICADA                                                  
+         1                                                                      
+                                                                                
+
+8 rows selected.
+
+SQL> SET LINESIZE 130
+SQL> SELECT *
+  2  FROM AREA;
+
+       CAR AR                                                                   CD                                                
+---------- ------------------------------------------------------------ ----------                                                
+         1 ALGEBRA                                                               4                                                
+         2 ANALISIS MATEMATICO                                                   1                                                
+         3 ASTRONOMIA Y ASTROFISICA                                              2                                                
+         4 CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3                                                
+         5 DIDACTICA DE LA MATEMATICA                                            1                                                
+         6 ESTADISTICA E INVESTIGACION OPERATIVA                                 3                                                
+         7 LENGUAJES Y SISTEMAS INFORMATICOS                                     3                                                
+         8 MATEMATICA APLICADA                                                   1                                                
+
+8 rows selected.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(1111, 'JUAN', 6, 'CU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(2222, 'CARLOS', 7, 'TU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(3333, 'PEDRO', 4, 'TEU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(4444, 'MARIA', 7, 'TU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(5555, 'IVAN', 1, 'CEU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(6666, 'CARMEN', 3, 'CD');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(7777, 'MARIO', 2, 'TU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(8888, 'FRANCISCO', 5, 'TU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(9999, 'ANGELA', 8, 'TEU');
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SELECT *
+  2  FROM PROFESOR;
+
+       DNI P                                                                   CAR CAT                                            
+---------- ------------------------------------------------------------ ---------- -----                                          
+      1111 JUAN                                                                  6 CU                                             
+      2222 CARLOS                                                                7 TU                                             
+      3333 PEDRO                                                                 4 TEU                                            
+      4444 MARIA                                                                 7 TU                                             
+      5555 IVAN                                                                  1 CEU                                            
+      6666 CARMEN                                                                3 CD                                             
+      7777 MARIO                                                                 2 TU                                             
+      8888 FRANCISCO                                                             5 TU                                             
+      9999 ANGELA                                                                8 TEU                                            
+
+9 rows selected.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(1010, 'DAVID', 4, 'TU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(2020, 'SOLEDAD', 7, 'CU');
+
+1 row created.
+
+SQL> INSERT INTO PROFESOR
+  2  VALUES(3030, 'JOSE MANUEL', 6, 'TEU');
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SELECT *
+  2  FROM PROFESOR;
+
+       DNI P                                                                   CAR CAT                                            
+---------- ------------------------------------------------------------ ---------- -----                                          
+      1111 JUAN                                                                  6 CU                                             
+      2222 CARLOS                                                                7 TU                                             
+      3333 PEDRO                                                                 4 TEU                                            
+      4444 MARIA                                                                 7 TU                                             
+      5555 IVAN                                                                  1 CEU                                            
+      6666 CARMEN                                                                3 CD                                             
+      7777 MARIO                                                                 2 TU                                             
+      8888 FRANCISCO                                                             5 TU                                             
+      9999 ANGELA                                                                8 TEU                                            
+      1010 DAVID                                                                 4 TU                                             
+      2020 SOLEDAD                                                               7 CU                                             
+
+       DNI P                                                                   CAR CAT                                            
+---------- ------------------------------------------------------------ ---------- -----                                          
+      3030 JOSE MANUEL                                                           6 TEU                                            
+
+12 rows selected.
+
+SQL> SET LINESIZE 140
+SQL> SELECT *
+  2  FROM PROFESOR;
+
+       DNI P                                                                   CAR CAT                                                      
+---------- ------------------------------------------------------------ ---------- -----                                                    
+      1111 JUAN                                                                  6 CU                                                       
+      2222 CARLOS                                                                7 TU                                                       
+      3333 PEDRO                                                                 4 TEU                                                      
+      4444 MARIA                                                                 7 TU                                                       
+      5555 IVAN                                                                  1 CEU                                                      
+      6666 CARMEN                                                                3 CD                                                       
+      7777 MARIO                                                                 2 TU                                                       
+      8888 FRANCISCO                                                             5 TU                                                       
+      9999 ANGELA                                                                8 TEU                                                      
+      1010 DAVID                                                                 4 TU                                                       
+      2020 SOLEDAD                                                               7 CU                                                       
+
+       DNI P                                                                   CAR CAT                                                      
+---------- ------------------------------------------------------------ ---------- -----                                                    
+      3030 JOSE MANUEL                                                           6 TEU                                                      
+
+12 rows selected.
+
+SQL> SET LINESIZE 20;
+SQL> SELECT *
+  2  FROM PROFESOR;
+
+       DNI          
+----------          
+P                   
+--------------------
+       CAR CAT      
+---------- -----    
+      1111          
+JUAN                
+         6 CU       
+                    
+      2222          
+CARLOS              
+         7 TU       
+
+       DNI          
+----------          
+P                   
+--------------------
+       CAR CAT      
+---------- -----    
+                    
+      3333          
+PEDRO               
+         4 TEU      
+                    
+      4444          
+MARIA               
+
+       DNI          
+----------          
+P                   
+--------------------
+       CAR CAT      
+---------- -----    
+         7 TU       
+                    
+      5555          
+IVAN                
+         1 CEU      
+                    
+      6666          
+
+       DNI          
+----------          
+P                   
+--------------------
+       CAR CAT      
+---------- -----    
+CARMEN              
+         3 CD       
+                    
+      7777          
+MARIO               
+         2 TU       
+                    
+
+       DNI          
+----------          
+P                   
+--------------------
+       CAR CAT      
+---------- -----    
+      8888          
+FRANCISCO           
+         5 TU       
+                    
+      9999          
+ANGELA              
+         8 TEU      
+
+       DNI          
+----------          
+P                   
+--------------------
+       CAR CAT      
+---------- -----    
+                    
+      1010          
+DAVID               
+         4 TU       
+                    
+      2020          
+SOLEDAD             
+
+       DNI          
+----------          
+P                   
+--------------------
+       CAR CAT      
+---------- -----    
+         7 CU       
+                    
+      3030          
+JOSE MANUEL         
+         6 TEU      
+                    
+
+12 rows selected.
+
+SQL> SET LINESIZE 130;
+SQL> SELECT *
+  2  FROM PROFESOR;
+
+       DNI P                                                                   CAR CAT                                            
+---------- ------------------------------------------------------------ ---------- -----                                          
+      1111 JUAN                                                                  6 CU                                             
+      2222 CARLOS                                                                7 TU                                             
+      3333 PEDRO                                                                 4 TEU                                            
+      4444 MARIA                                                                 7 TU                                             
+      5555 IVAN                                                                  1 CEU                                            
+      6666 CARMEN                                                                3 CD                                             
+      7777 MARIO                                                                 2 TU                                             
+      8888 FRANCISCO                                                             5 TU                                             
+      9999 ANGELA                                                                8 TEU                                            
+      1010 DAVID                                                                 4 TU                                             
+      2020 SOLEDAD                                                               7 CU                                             
+
+       DNI P                                                                   CAR CAT                                            
+---------- ------------------------------------------------------------ ---------- -----                                          
+      3030 JOSE MANUEL                                                           6 TEU                                            
+
+12 rows selected.
+
+SQL> SELECT *
+  2  FROM PROFESOR;
+
+       DNI P                                                                   CAR CAT                                            
+---------- ------------------------------------------------------------ ---------- -----                                          
+      1111 JUAN                                                                  6 CU                                             
+      2222 CARLOS                                                                7 TU                                             
+      3333 PEDRO                                                                 4 TEU                                            
+      4444 MARIA                                                                 7 TU                                             
+      5555 IVAN                                                                  1 CEU                                            
+      6666 CARMEN                                                                3 CD                                             
+      7777 MARIO                                                                 2 TU                                             
+      8888 FRANCISCO                                                             5 TU                                             
+      9999 ANGELA                                                                8 TEU                                            
+      1010 DAVID                                                                 4 TU                                             
+      2020 SOLEDAD                                                               7 CU                                             
+
+       DNI P                                                                   CAR CAT                                            
+---------- ------------------------------------------------------------ ---------- -----                                          
+      3030 JOSE MANUEL                                                           6 TEU                                            
+
+12 rows selected.
+
+SQL> SET PAGESIZE 20;
+SQL> SELECT *
+  2  FROM PROFESOR;
+
+       DNI P                                                                   CAR CAT                                            
+---------- ------------------------------------------------------------ ---------- -----                                          
+      1111 JUAN                                                                  6 CU                                             
+      2222 CARLOS                                                                7 TU                                             
+      3333 PEDRO                                                                 4 TEU                                            
+      4444 MARIA                                                                 7 TU                                             
+      5555 IVAN                                                                  1 CEU                                            
+      6666 CARMEN                                                                3 CD                                             
+      7777 MARIO                                                                 2 TU                                             
+      8888 FRANCISCO                                                             5 TU                                             
+      9999 ANGELA                                                                8 TEU                                            
+      1010 DAVID                                                                 4 TU                                             
+      2020 SOLEDAD                                                               7 CU                                             
+      3030 JOSE MANUEL                                                           6 TEU                                            
+
+12 rows selected.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(1, 'BASES DE DATOS', 'GII', 3, 7, 3, 1.5, 1.5);
+
+1 row created.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(2, 'INTELIGENCIA ARTIFICIAL', 'GII', 3, 4, 1.5, 1.5, 3);
+
+1 row created.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(3, 'ALMACENES DE DATOS', 'MII', 1, 7, 1.5, 0, 1.5);
+
+1 row created.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(4, 'MINERIA DE DATOS', 'MII', 1, 7, 1.5, 0, 1.5);
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(5, 'INFORMATICA BASICA', 'GII', 1, 7, 3, 1.5, 1.5);
+
+1 row created.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(6, 'ALGEBRA', 'GII', 1, 1, 3, 3, 0);
+
+1 row created.
+
+SQL> SPOOL
+currently spooling to PRACT3.lst
+SQL> SPOOL OFF
+SQL> SPOOL
+currently spooling to PRACT3.lst
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(7, 'CALCULO', 'GII', 1, 8, 3, 3, 0);
+
+1 row created.
+
+SQL> SELECT *
+  2  FROM ASIGNATURA;
+
+       CAS A                                                  T           CUR        CAR         CT         CP         CL         
+---------- -------------------------------------------------- ---- ---------- ---------- ---------- ---------- ----------         
+         7 CALCULO                                            GII           1          8          3          3          0         
+         1 BASES DE DATOS                                     GII           3          7          3        1.5        1.5         
+         2 INTELIGENCIA ARTIFICIAL                            GII           3          4        1.5        1.5          3         
+         3 ALMACENES DE DATOS                                 MII           1          7        1.5          0        1.5         
+         4 MINERIA DE DATOS                                   MII           1          7        1.5          0        1.5         
+         5 INFORMATICA BASICA                                 GII           1          7          3        1.5        1.5         
+         6 ALGEBRA                                            GII           1          1          3          3          0         
+
+7 rows selected.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SELECT *
+  2  FROM ASIGNATURA;
+
+       CAS A                                                  T           CUR        CAR         CT         CP         CL         
+---------- -------------------------------------------------- ---- ---------- ---------- ---------- ---------- ----------         
+         7 CALCULO                                            GII           1          8          3          3          0         
+         1 BASES DE DATOS                                     GII           3          7          3        1.5        1.5         
+         2 INTELIGENCIA ARTIFICIAL                            GII           3          4        1.5        1.5          3         
+         3 ALMACENES DE DATOS                                 MII           1          7        1.5          0        1.5         
+         4 MINERIA DE DATOS                                   MII           1          7        1.5          0        1.5         
+         5 INFORMATICA BASICA                                 GII           1          7          3        1.5        1.5         
+         6 ALGEBRA                                            GII           1          1          3          3          0         
+
+7 rows selected.
+
+SQL> SPOOL
+currently spooling to PRACT3.lst
+SQL> SPOOL OFF
+SQL> SPOOL
+currently spooling to PRACT3.lst
+SQL> SET LINESIZE 130
+SQL> SET PAGESIZE 30
+SQL> SPOOL OFF
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(8, 'OPTIMIZACION', 'GII', 1, 6, 3, 1.5, 1.5);
+
+1 row created.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(9, 'GESTION DE RIESGOS', 'GII', 3, 4, 3, 0, 3);
+
+1 row created.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(10, 'ASTRONOMIA', 'GF', 2, 3, 3, 1.5, 1.5);
+
+1 row created.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(11, 'DIDACTICA DE LA MATEMATICA', 'GM', 2, 5, 6, 0, 0);
+
+1 row created.
+
+SQL> INSERT INTO ASIGNATURA
+  2  VALUES(12, 'ANALISIS COMPLEJO', 'GM', 4, 2, 4.5, 3, 0);
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(4444, 1, 3, 1.5, 1.5, '01-SEP-11', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(4444, 4, 1.5, 0, 1.5, '01-SEP-08', '31-AUG-10');
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(4444, 5, 3, 0, 0, '01-SEP-10', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(1111, 8, 3, 1.5, 1.5, '01-SEP-07', '31-AUG-09');
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(1111, 8, 3, 0, 0, '01-SEP-09', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(3030, 8, 0, 1.5, 1.5, '01-SEP-09', NULL);
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(2222, 4, 1.5, 0, 1.5, '01-SEP-09', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(2222, 3, 1.5, 0, 1.5, '01-SEP-06', '31-AUG-07');
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(1010, 2, 1.5, 1.5, 3, '01-SEP-05', '31-AUG-08');
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(3333, 2, 1.5, 1.5, 3, '01-SEP-08', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(1010, 9, 3, 0, 3, '01-SEP-08', '31-AUG-09');
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(1010, 9, 1.5, 0, 1.5, '01-SEP-09', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(9999, 7, 3, 3, 0, '01-SEP-10', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(5555, 6, 3, 3, 0, '31-MAR-10', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(6666, 10, 3, 1.5, 1.5, '01-SEP-08', '31-AUG-11');
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(8888, 11, 6, 0, 0, '01-SEP-09', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(2020, 3, 1.5, 0, 1.5, '01-SEP-08', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(7777, 12, 4.5, 3, 0, '01-SEP-10', NULL);
+
+1 row created.
+
+SQL> INSERT INTO PLAN_DOCENTE
+  2  VALUES(3333, 9, 1.5, 0, 1.5, '01-SEP-09', NULL);
+
+1 row created.
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SELECT CD, D
+  2  FROM DEPARTAMENTO;
+
+        CD D                                                                                                                                          
+---------- ------------------------------------------------------------                                                                               
+         1 ANALISIS MATEMATATICO                                                                                                                      
+         2 ASTROFISICA                                                                                                                                
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                                                                                         
+         4 MATEMATICA FUNDAMENTAL                                                                                                                     
+
+SQL> SPOOL OFF
