@@ -1,0 +1,263 @@
+SQL> SPOOL
+currently spooling to PRACT9_ALUMNO.lst
+SQL> 
+SQL> SELECT *
+  2  FROM alumno.DEPARTAMENTO;
+
+        CD D                                                                                                                      
+---------- --------------------                                                                                                   
+         1 ANALISIS MATEMATICO                                                                                                    
+         5 ECONOMIA APLICADA                                                                                                      
+
+SQL> REMARK 4
+SQL> SELECT *
+  2  FROM ALUMNO.DEPARTAMENTO;
+
+        CD D                                                                                                                      
+---------- --------------------                                                                                                   
+         1 ANALISIS MATEMATICO                                                                                                    
+         5 ECONOMIA APLICADA                                                                                                      
+
+SQL> REMARK 5
+SQL> SELECT *
+  2  FROM ALUMNO.PROFESOR;
+FROM ALUMNO.PROFESOR
+            *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> REMARK 6
+SQL> INSERT INTO ALUMNO.DEPARTAMENTO
+  2  VALUES (5, 'ECONOMIA');
+INSERT INTO ALUMNO.DEPARTAMENTO
+*
+ERROR at line 1:
+ORA-00001: unique constraint (ALUMNO.SYS_C0025052) violated 
+
+
+SQL> SELECT *
+  2  FROM ALUMNO.DEPARTAMENTO;
+
+        CD D                                                                                                                      
+---------- --------------------                                                                                                   
+         1 ANALISIS MATEMATICO                                                                                                    
+         5 ECONOMIA APLICADA                                                                                                      
+
+SQL> DROP TABLE ALUMNO;
+DROP TABLE ALUMNO
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> DROP TABLE DEPARTAMENTO;
+
+Table dropped.
+
+SQL> SELECT *
+  2  FROM ALU0101351773.DEPARTAMENTO;
+
+        CD D                                                                                                                      
+---------- ------------------------------------------------------------                                                           
+         1 ANALISIS MATEMATATICO                                                                                                  
+         2 ASTROFISICA                                                                                                            
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                                                                     
+         4 MATEMATICA FUNDAMENTAL                                                                                                 
+
+SQL> REMARK 4
+SQL> SELECT *
+  2  FROM ALU0101351773.DEPARTAMENTO;
+
+        CD D                                                                                                                      
+---------- ------------------------------------------------------------                                                           
+         1 ANALISIS MATEMATATICO                                                                                                  
+         2 ASTROFISICA                                                                                                            
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                                                                     
+         4 MATEMATICA FUNDAMENTAL                                                                                                 
+
+SQL> REMARK 5
+SQL> SELECT *
+  2  FROM ALU0101351773.DEPARTAMENTO;
+
+        CD D                                                                                                                      
+---------- ------------------------------------------------------------                                                           
+         1 ANALISIS MATEMATATICO                                                                                                  
+         2 ASTROFISICA                                                                                                            
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                                                                     
+         4 MATEMATICA FUNDAMENTAL                                                                                                 
+
+SQL> SELECT * FROM AREA;
+SELECT * FROM AREA
+              *
+ERROR at line 1:
+ORA-04044: procedure, function, package, or type is not allowed here 
+
+
+SQL> SELECT * FROM ALUMNO.AREA;
+SELECT * FROM ALUMNO.AREA
+                     *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT *
+  2  FROM ALU0101351773.PROFESOR;
+FROM ALU0101351773.PROFESOR
+                   *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> REMARK 5
+SQL> SELECT *
+  2  FROM ALU0101351773.PROFESOR;
+FROM ALU0101351773.PROFESOR
+                   *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> REMARK 6
+SQL> INSERT INTO ALU0101351773.DEPARTAMENTO
+  2  VALUES (5, 'ECONOMIA');
+
+1 row created.
+
+SQL> UPDATE ALU0101351773.DEPARTAMENTO
+  2  SET D = 'ECONOMIA APLICADA'
+  3  WHERE (CD = 5);
+
+1 row updated.
+
+SQL> UPDATE ALU0101351773.TITULACION
+  2  
+SQL> REMARK 8
+SQL> UPDATE ALU0101351773.TITULACION
+  2  SET FAC = 'ESIT1'
+  3  WHERE T = 'GII';
+
+1 row updated.
+
+SQL> REMARK 9
+SQL> DELETE FROM ALU0101351773.TITULACION
+  2  WHERE T = 'GII';
+DELETE FROM ALU0101351773.TITULACION
+                          *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> remark 10
+SQL> ROLLBACK WORK;
+
+Rollback complete.
+
+SQL> CREATE VIEW ALU0101351773.ASIGNATURA(A, CAR)
+  2  AS SELECT *
+  3     FROM ALU0101351773.ASIGNATURA;
+CREATE VIEW ALU0101351773.ASIGNATURA(A, CAR)
+                          *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> DROP TABLE ALU0101351773.ASIGNATURA;
+DROP TABLE ALU0101351773.ASIGNATURA
+                         *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> REMARK 12
+SQL> DROP TABLE ALU0101351773.ASIGNATURA;
+DROP TABLE ALU0101351773.ASIGNATURA
+                         *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> REMARK 13
+SQL> SELECT *
+  2  FROM ALU0101351773.AREA;
+
+       CAR AR                                                                   CD                                                
+---------- ------------------------------------------------------------ ----------                                                
+         1 ALGEBRA                                                               4                                                
+         2 ANALISIS MATEMATICO                                                   1                                                
+         3 ASTRONOMIA Y ASTROFISICA                                              2                                                
+         4 CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3                                                
+         5 DIDACTICA DE LA MATEMATICA                                            1                                                
+         6 ESTADISTICA E INVESTIGACION OPERATIVA                                 3                                                
+         7 LENGUAJES Y SISTEMAS INFORMATICOS                                     3                                                
+         8 MATEMATICA APLICADA                                                   1                                                
+
+8 rows selected.
+
+SQL> REMARK 14
+SQL> DELETE FROM AREA
+  2  WHERE CAR = 2;
+DELETE FROM AREA
+            *
+ERROR at line 1:
+ORA-04044: procedure, function, package, or type is not allowed here 
+
+
+SQL> DELETE FROM AREA
+  2  WHERE CAR = 3;
+DELETE FROM AREA
+            *
+ERROR at line 1:
+ORA-04044: procedure, function, package, or type is not allowed here 
+
+
+SQL> REMARK 15
+SQL> DELETE FROM AREA
+  2  WHERE CAR = 3;
+DELETE FROM AREA
+            *
+ERROR at line 1:
+ORA-04044: procedure, function, package, or type is not allowed here 
+
+
+SQL> REMARK 14
+SQL> DELETE FROM ALU0101351773.AREA
+  2  WHERE CAR = 2;
+
+1 row deleted.
+
+SQL> REMARK 15
+SQL> DELETE FROM ALU0101351773.AREA
+  2  WHERE CAR = 3;
+
+1 row deleted.
+
+SQL> REMARK 16
+SQL> INSERT INTO ALU0101351773.DEPARTAMENTO
+  2  VALUES (5, 'ECONOMIA APLICADA');
+
+1 row created.
+
+SQL> REMARK 17
+SQL> DELETE FROM ALU0101351773.ASIGNATURA
+  2  WHERE CAR = 1;
+DELETE FROM ALU0101351773.ASIGNATURA
+                          *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> REMARK 18
+SQL> DELETE FROM ALU0101351773.TITULACION
+  2  WHERE T = 'MII';
+DELETE FROM ALU0101351773.TITULACION
+                          *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SPOOL OFF

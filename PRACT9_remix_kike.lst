@@ -1,0 +1,125 @@
+SQL> GRANT SELECT ON DEPARTAMENTO TO alumno
+  2  ;
+
+Grant succeeded.
+
+SQL> GRANT SELECT ON AREA TO alumno
+  2  ;
+
+Grant succeeded.
+
+SQL> GRANT SELECT ON ASIGNATURA TO alumno;
+
+Grant succeeded.
+
+SQL> GRANT SELECT ON TITULACION TO alumno;
+
+Grant succeeded.
+
+SQL> REMARK 2
+SQL> GRANT INSERT, UPDATE, DELETE ON DEPARTAMENTO TO alumno;
+
+Grant succeeded.
+
+SQL> GRANT INSERT, UPDATE, DELETE ON AREA TO alumno;
+
+Grant succeeded.
+
+SQL> GRANT UPDATE ON ASIGNATURA TO alumno;
+
+Grant succeeded.
+
+SQL> GRANT UPDATE ON TITULACION TO alumno;
+
+Grant succeeded.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> SELECT * FROM DEPARTAMENTO;
+
+        CD D                                                                                                                                          
+---------- ------------------------------------------------------------                                                                               
+         1 ANALISIS MATEMTICO                                                                                                                         
+         2 ASTROFISICA                                                                                                                                
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                                                                                         
+         4 MATEMATICA FUNDAMENTAL                                                                                                                     
+         5 ECONOMIA APLICADA                                                                                                                          
+
+SQL> DELETE FROM DEPARTAMENTO
+  2  WHERE CD = 2;
+
+1 row deleted.
+
+SQL> SELECT * FROM AREA;
+
+       CAR AR                                                                   CD                                                                    
+---------- ------------------------------------------------------------ ----------                                                                    
+         1 ALGEBRA                                                               4                                                                    
+         2 ANALISIS MATEMATICO                                                   1                                                                    
+         5 DIDACTICA DE LA MATEMATICA                                            1                                                                    
+         8 MATEMATICA APLICADA                                                   1                                                                    
+
+SQL> SELECT * FROM PROFESOR;
+
+       DNI P                                                                   CAR CAT                                                                
+---------- ------------------------------------------------------------ ---------- -----                                                              
+      4040 CARMELO                                                                 TU                                                                 
+      5050 CARINA                                                                8 CEU                                                                
+      1111 JUAN                                                                    CU                                                                 
+      2222 CARLOS                                                                  TU                                                                 
+      3333 PEDRO                                                                   TEU                                                                
+      4444 MARIA                                                                   TU                                                                 
+      5555 IVAN                                                                  1 CEU                                                                
+      6666 CARMEN                                                                  CD                                                                 
+      7777 MARIO                                                                 2 TU                                                                 
+      8888 FRANCISCO                                                             5 TU                                                                 
+      9999 ANGELA                                                                8 TEU                                                                
+      1010 DAVID                                                                   TU                                                                 
+      2020 SOLEDAD                                                                 CU                                                                 
+      3030 JOSE MANUEL                                                             TEU                                                                
+
+14 rows selected.
+
+SQL> SELECT * FROM TITULACION;
+
+T    FAC                                                                                                                                              
+---- --------------------------------------------------------------------------------                                                                 
+GM   GRADO MATEMATICAS                                                                                                                                
+GF   GRADO FISICA                                                                                                                                     
+GII  ESCUELA SUPERIOR TECNICA SUPERIOR DE INGENIERIA INFORMATICA                                                                                      
+MII  ESCUELA SUPERIOR TECNICA SUPERIOR DE INGENIERIA INFORMATICA                                                                                      
+
+SQL> REVOKE ALL FROM alumno;
+REVOKE ALL FROM alumno
+       *
+ERROR at line 1:
+ORA-01924: role 'ALL' not granted or does not exist 
+
+
+SQL> REVOKE ALL ON DEPARTAMENTO TO alumno;
+REVOKE ALL ON DEPARTAMENTO TO alumno
+                           *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> 
+SQL> SPOOL OFF
+SQL> REVOKE ALL ON DEPARTAMENTO FROM alumno;
+
+Revoke succeeded.
+
+SQL> REVOKE ALL ON AREA FROM alumno;
+
+Revoke succeeded.
+
+SQL> REVOKE ALL ON ASIGNATURA FROM alumno;
+
+Revoke succeeded.
+
+SQL> REVOKE ALL ON TITULACION FROM alumno;
+
+Revoke succeeded.
+
+SQL> SPOOL OFF

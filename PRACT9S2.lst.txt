@@ -1,0 +1,245 @@
+SQL> SET LINESIZE 150
+SQL> SET PAGESIZE 25
+SQL> SELECT * FROM DEPARTAMENTO;
+SELECT * FROM DEPARTAMENTO
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT * FROM DEPARTAMENTO;
+SELECT * FROM DEPARTAMENTO
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT * FROM alu0101353647.DEPARTAMENTO;
+
+        CD D                                                                                                                                          
+---------- ------------------------------------------------------------                                                                               
+         1 ANALISIS MATEMTICO                                                                                                                         
+         2 ASTROFISICA                                                                                                                                
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                                                                                         
+         4 MATEMATICA FUNDAMENTAL                                                                                                                     
+
+SQL> SELECT * FROM alu0101353647.AREA;
+
+       CAR AR                                                                   CD                                                                    
+---------- ------------------------------------------------------------ ----------                                                                    
+         1 ALGEBRA                                                               4                                                                    
+         2 ANALISIS MATEMATICO                                                   1                                                                    
+         3 ASTRONOMIA Y ASTROFISICA                                              2                                                                    
+         4 CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3                                                                    
+         5 DIDACTICA DE LA MATEMATICA                                            1                                                                    
+         6 ESTADISTICA E INVESTIGACION OPERATIVA                                 3                                                                    
+         7 LENGUAJES Y SISTEMAS INFORMATICOS                                     3                                                                    
+         8 MATEMATICA APLICADA                                                   1                                                                    
+
+8 rows selected.
+
+SQL> INSERT INTO alu0101353647.DEPARTAMENTO
+  2  VALUES(5, 'ECONOMIA');
+
+1 row created.
+
+SQL> UPDATE alu0101353647.DEPARTAMENTO
+  2  
+SQL> DESCRIBE alu0101353647.DEPARTAMENTO
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ CD                                                                                  NOT NULL NUMBER(2)
+ D                                                                                            VARCHAR2(60)
+
+SQL> SELECT * FROM alu0101353647.PROFESOR;
+SELECT * FROM alu0101353647.PROFESOR
+                            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> UPDATE DEPARTAMENTO
+  2  SET D = 'ECONOMIA APLICADA'
+  3  WHERE CD = 5;
+UPDATE DEPARTAMENTO
+       *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> UPDATE alu0101353647.DEPARTAMENTO
+  2  SET D = 'ECONOMIA APLICADA'
+  3  WHERE CD = 5;
+
+1 row updated.
+
+SQL> UPDATE TITULACION
+  2  SET
+  3  
+SQL> DESCRIBE alu0101353647.TITULACION;
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ T                                                                                   NOT NULL CHAR(4)
+ FAC                                                                                          VARCHAR2(80)
+
+SQL> UPDATE TITULACION
+  2  SET FAC = 'ESIT1'
+  3  WHERE T = 'GII';
+UPDATE TITULACION
+       *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> UPDATE alu0101353647.TITULACION
+  2  SET FAC = 'ESIT1'
+  3  WHERE T = 'GII';
+
+1 row updated.
+
+SQL> DELETE FROM alu0101353647.TITULACION
+  2  WHERE T = 'GII';
+DELETE FROM alu0101353647.TITULACION
+                          *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> ROLLBACK WORK;
+
+Rollback complete.
+
+SQL> CREATE VIEW VISTA 3 AS
+  2  
+SQL> DESCRIBE alu0101353647.ASIGNATURA;
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ CAS                                                                                 NOT NULL NUMBER(3)
+ A                                                                                   NOT NULL VARCHAR2(50)
+ T                                                                                   NOT NULL CHAR(4)
+ CUR                                                                                          NUMBER(1)
+ CAR                                                                                          NUMBER(3)
+ CT                                                                                           NUMBER(3,1)
+ CP                                                                                           NUMBER(3,1)
+ CL                                                                                           NUMBER(3,1)
+
+SQL> CREATE VIEW VISTA3 AS
+  2  SELECT A, CAR
+  3  FROM alu0101353647.ASIGNATURA;
+CREATE VIEW VISTA3 AS
+            *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> 
+SQL> CREATE VIEW VISTAZ AS
+  2  SELECT A, CAR
+  3  FROM alu0101353647.ASIGNATURA;
+
+View created.
+
+SQL> DROP ASIGNATURA;
+DROP ASIGNATURA
+     *
+ERROR at line 1:
+ORA-00950: invalid DROP option 
+
+
+SQL> DROP alu0101353647.ASIGNATURA;
+DROP alu0101353647.ASIGNATURA
+     *
+ERROR at line 1:
+ORA-00950: invalid DROP option 
+
+
+SQL> DROP TABLE alu0101353647.ASIGNATURA;
+DROP TABLE alu0101353647.ASIGNATURA
+                         *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> SELECT *
+  2  FROM alu0101353647.AREA;
+
+       CAR AR                                                                   CD                                                                    
+---------- ------------------------------------------------------------ ----------                                                                    
+         1 ALGEBRA                                                               4                                                                    
+         2 ANALISIS MATEMATICO                                                   1                                                                    
+         3 ASTRONOMIA Y ASTROFISICA                                              2                                                                    
+         4 CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3                                                                    
+         5 DIDACTICA DE LA MATEMATICA                                            1                                                                    
+         6 ESTADISTICA E INVESTIGACION OPERATIVA                                 3                                                                    
+         7 LENGUAJES Y SISTEMAS INFORMATICOS                                     3                                                                    
+         8 MATEMATICA APLICADA                                                   1                                                                    
+
+8 rows selected.
+
+SQL> DELETE FROM alu0101353647.AREA
+  2  WHERE CD = 2;
+
+1 row deleted.
+
+SQL> DELETE FROM alu0101353647.AREA
+  2  WHERE CD = 3;
+
+3 rows deleted.
+
+SQL> 
+SQL> INSERT INTO alu0101353647.DEPARTAMENTO
+  2  VALUES(5, 'ECONOMIA APLICADA');
+
+1 row created.
+
+SQL> SELECT * FROM alu0101353647.ASIGNATURA;
+
+       CAS A                                                  T           CUR        CAR         CT         CP         CL                             
+---------- -------------------------------------------------- ---- ---------- ---------- ---------- ---------- ----------                             
+        13 ESTADISTICA                                        GII           3                     0          0          0                             
+         1 BASES DE DATOS                                     GII           3                     3        1.5        1.5                             
+         2 INTELIGENCIA ARTIFICIAL                            GII           3                   1.5        1.5          3                             
+         3 ALMACENES DE DATOS                                 MII           1                   1.5          0        1.5                             
+         4 MINERIA DE DATOS                                   MII           1                   1.5          0        1.5                             
+         5 INFORMATICA BASICA                                 GII           1                     3        1.5        1.5                             
+         6 ALGEBRA                                            GII           1          1          3          3          0                             
+         7 CALCULO                                            GII           1          8          3          3          0                             
+         8 OPTIMIZACION                                       GII           1                     3        1.5        1.5                             
+         9 GESTION DE RIESGOS                                 GII           3                     3          0          3                             
+        11 DIDACTICA DE LA MATEMATICA                         GM            2          5          6          0          0                             
+        10 ASTRONOMIA                                         GF            2                     3        1.5        1.5                             
+        12 ANALISIS COMPLEJO                                  GM            4          2        4.5          3          0                             
+
+13 rows selected.
+
+SQL> DELETE FROM alu0101353647.ASIGNATURA
+  2  WHERE CAR = 1;
+DELETE FROM alu0101353647.ASIGNATURA
+                          *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> SELECT * FROM alu0101353647.TITULACION
+  2  ;
+
+T    FAC                                                                                                                                              
+---- --------------------------------------------------------------------------------                                                                 
+GM   GRADO MATEMATICAS                                                                                                                                
+GF   GRADO FISICA                                                                                                                                     
+GII  ESCUELA SUPERIOR TECNICA SUPERIOR DE INGENIERIA INFORMATICA                                                                                      
+MII  ESCUELA SUPERIOR TECNICA SUPERIOR DE INGENIERIA INFORMATICA                                                                                      
+
+SQL> DELETE FROM alu0101353647.TITULACION
+  2  WHERE T = 'MII';
+DELETE FROM alu0101353647.TITULACION
+                          *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> SPOOL OFF
